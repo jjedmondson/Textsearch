@@ -23,24 +23,22 @@ class textsearch extends Plugin
 
 	/**
 	 * function save_price
-	 * Determines whether a thumbnail needs to be created for this post, and adds it to the postinfo for this post
-	 * @param Post the post for which the thumb should be generated
+
+	 * @param Post the post for which the price should be stored.
 	**/
 	public function save_price( $post )
 	{
-		// set up a temporary variable to capture the image tag(s) �\d{4} should do it
-		$html = false;
-		$matches= array();
+		// set up a temporary variable to capture the first price found
+		$matches = array();
 		if ( preg_match( '/£[\d,.]*\d/', $post->content, $matches) ) {
 
 			$price = $matches[0];
-EventLog::log("found $price");
-		}
 
 		$thumb = $post->info->price;
 
 		$post->info->price = $price;
 		$post->info->commit();
+		}
 	}
 }
 ?>
