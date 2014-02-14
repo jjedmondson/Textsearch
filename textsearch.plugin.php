@@ -31,7 +31,7 @@ class textsearch extends Plugin
 		// set up a temporary variable to capture the image tag(s) �\d{4} should do it
 		$html = false;
 		$matches= array();
-		if ( preg_match( '/£\d{1,4/}', $post->content, $matches) ) {
+		if ( preg_match( '/£\d{1,4}/', $post->content, $matches) ) {
 			// we got one! Now tease out the src element
 			$html= $matches[0];
 EventLog::log("found $html");
