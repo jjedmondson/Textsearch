@@ -28,33 +28,19 @@ class textsearch extends Plugin
 	**/
 	public function save_price( $post )
 	{
-		// set up a temporary variable to capture the image tag(s) �\d{4} should do it
+		// set up a temporary variable to capture the image tag(s) �\d{4} should do it
 		$html = false;
 		$matches= array();
-		if ( preg_match( '/£\d{1,4}/', $post->content, $matches) ) {
-			// we got one! Now tease out the src element
-			$html= $matches[0];
-EventLog::log("found $html");
+		if ( preg_match( '/£[\d,.]*\d/', $post->content, $matches) ) {
+
+			$price = $matches[0];
+EventLog::log("found $price");
 		}
 
 		$thumb = $post->info->price;
 
-		$post->info->price = $html;
+		$post->info->price = $price;
 		$post->info->commit();
-	}
-
-	/**
-	 * post_filter_content_excerpt_out
-	 * filters the post's excerpt to display only the thumbnail
-	**/
-	public function filter_post_content_excerpt_out ( $excerpt, $post )
-	{
-		if (isset( $post->info->textsearch_thumb ) ) {
-			return $post->info->textsearch_thumb;
-		} else {
-			return $excerpt;
-		}
 	}
 }
 ?>
-
