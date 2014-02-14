@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <pluggable type="plugin">
-	<name>texsearch</name>
+	<name>textsearch</name>
 	<license url="http://www.apache.org/licenses/LICENSE-2.0.html">Apache Software License 2.0</license>
-	<url>http://soullesssoftware.com/photology</url>
-	<author url="http://skippy.net/">Scott Merrill</author>
+	<url>https://github.com/jjedmondson/Textsearch</url>
+	<author url="http://john.edmondson-uk.com/">John Edmonson</author>
 	<author url="http://mikelietz.org/code">Mike Lietz</author>
-	<version>1.1</version>
-	<description><![CDATA[Automatically make thumbnail from the first image in a post.]]></description>
-	<copyright>2009</copyright>
-	<guid>3e343f83-75cd-4648-91a6-22c4da33456</guid>
-	<help>
-		<value><![CDATA[Requires Habari Media Silo<hr>Creates a thumbnail for the first image file, taken from the Habari Media Silo, in <code>$post->info->photology_thumb</code>. You can also obtain the thumbnail by echoing <code>$post->content_excerpt_out</code>]]></value>
-	</help>
+	<version>1.0</version>
+	<description><![CDATA[Find a price in a post.]]></description>
+	<copyright>2014</copyright>
+	<guid>5BAAE431-FA3B-4472-988E-274D5ACAB4D2</guid>
 </pluggable>
  
