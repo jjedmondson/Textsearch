@@ -16,7 +16,7 @@ class textsearch extends Plugin
 				case _t('Configure') :
 					$ui = new FormUI( strtolower( get_class( $this ) ) );
 
-					$max_dimension = $ui->append( 'text', 'max_dimension', 'photology__maxdim', _t( 'Maximum size of thumbnail (length and width)' ) );
+					$max_dimension = $ui->append( 'text', 'max_dimension', 'textsearch__maxdim', _t( 'Maximum size of thumbnail (length and width)' ) );
 					$max_dimension->add_validator( array ( $this, 'validate_numeric' ) );
 					$ui->append( 'submit', 'save', _t('Save') );
 					$ui->on_success( array( $this, 'update_config' ) );
@@ -29,7 +29,7 @@ class textsearch extends Plugin
 	public function validate_numeric( $value )
 	{
 		if( !is_numeric( $value ) ) {
-			return array( _t( 'This field must be a number.', 'photology' ) );
+			return array( _t( 'This field must be a number.', 'textsearch' ) );
 		}
 		return array();
 	}
@@ -39,7 +39,7 @@ class textsearch extends Plugin
 	**/
 	public function update_config( $ui )
 	{
-		Session::notice( _t( 'Maximum Thumbnail Dimension set.', 'photology' ) );
+		Session::notice( _t( 'Maximum Thumbnail Dimension set.', 'textsearch' ) );
 		$ui->save();
 	}
 
@@ -50,7 +50,7 @@ class textsearch extends Plugin
 	**/
 	public function action_post_insert_after( $post )
 	{
-		$this->save_thumbnail( $post );
+		$this->save_price( $post );
 	}
 
 	/**
@@ -60,15 +60,15 @@ class textsearch extends Plugin
 	**/
 	public function action_post_update_after( $post )
 	{
-		$this->save_thumbnail( $post );
+		$this->save_price( $post );
 	}
 
 	/**
-	 * function save_thumbnail
+	 * function save_price
 	 * Determines whether a thumbnail needs to be created for this post, and adds it to the postinfo for this post
 	 * @param Post the post for which the thumb should be generated
 	**/
-	public function save_thumbnail( $post )
+	public function save_price( $post )
 	{
 		// set up a temporary variable to capture the image tag(s) £\d{4} should do it
  
@@ -92,17 +92,17 @@ class textsearch extends Plugin
 
 		if ( ! isset( $thumb ) ) {
 			// no thumbnail exists for this post yet, so make one
-			$post->info->photology_thumb= $this->make_thumbnail( $elements['src'] );
-			$post->info->photology_md5= md5_file( $this->get_image_file( $elements['src'] ) );
+			$post->info->textsearch_thumb= $this->make_thumbnail( $elements['src'] );
+			$post->info->textsearch_md5= md5_file( $this->get_image_file( $elements['src'] ) );
 			$post->info->commit();
 		} else {
 			// a thumbnail exists; we should check whether we need to update it
-			if (true) { // ( md5_file( $this->get_image_file( $elements['src'] ) ) != $post->info->photology_md5 ) {
+			if (true) { // ( md5_file( $this->get_image_file( $elements['src'] ) ) != $post->info->textsearch_md5 ) {
 				// the image has a different MD5 sum than the
 				// one we previously calculated for it, so
 				// generate a new thumbnail
-				$post->info->photology_thumb= $this->make_thumbnail( $elements['src'] );
-				$post->info->photology_md5= md5_file( $this->get_image_file( $elements['src'] ) );
+				$post->info->textsearch_thumb= $this->make_thumbnail( $elements['src'] );
+				$post->info->textsearch_md5= md5_file( $this->get_image_file( $elements['src'] ) );
 				$post->info->commit();
 			}
 		}
@@ -139,7 +139,7 @@ class textsearch extends Plugin
 	public function make_thumbnail( $image )
 	{
 		// Get maximum size from stored options, or use a default of 100.
-		$max_dimension= Options::get( 'photology__maxdim', 100 ); 
+		$max_dimension= Options::get( 'textsearch__maxdim', 100 ); 
 
 		// Get the image from the filesystem
 		$img= $this->get_image_file( $image );
@@ -196,7 +196,7 @@ class textsearch extends Plugin
 		imagecopyresampled( $dst_img, $src_img, 0,0,0,0, $thumb_w, $thumb_h, $src_width, $src_height );
 
 		// Define the thumbnail filename
-		$dst_filename = $thumbdir . '/' . basename( $img ) . ".photology_tb.jpg";
+		$dst_filename = $thumbdir . '/' . basename( $img ) . ".textsearch_tb.jpg";
 
 		// Save the thumbnail as a JPEG
 		imagejpeg( $dst_img, $dst_filename );
@@ -217,8 +217,8 @@ class textsearch extends Plugin
 	**/
 	public function filter_post_content_excerpt_out ( $excerpt, $post )
 	{
-		if (isset( $post->info->photology_thumb ) ) {
-			return '<img src="' . $post->info->photology_thumb . '">';
+		if (isset( $post->info->textsearch_thumb ) ) {
+			return '<img src="' . $post->info->textsearch_thumb . '">';
 		} else {
 			return $excerpt;
 		}
